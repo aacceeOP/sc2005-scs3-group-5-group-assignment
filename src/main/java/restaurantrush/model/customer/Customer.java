@@ -1,5 +1,5 @@
 /**
  * Customer.java
  * Stage: 1
- * Responsibility: Define shared customer state and extensible customer behaviour.
+ * Responsibility: Define customer states, satisfaction, abandonment eligibility, food selection and extensible customer behaviour.
  */

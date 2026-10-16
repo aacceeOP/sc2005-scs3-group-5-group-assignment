@@ -1,5 +1,5 @@
 /**
  * OrderStatus.java
  * Stage: 1
- * Responsibility: Enumerate order lifecycle states.
+ * Responsibility: Enumerate PENDING, READY, SERVED, PAID and CANCELLED order states.
  */

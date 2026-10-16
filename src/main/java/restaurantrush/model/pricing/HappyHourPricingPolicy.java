@@ -1,5 +1,5 @@
 /**
  * HappyHourPricingPolicy.java
  * Stage: 3
- * Responsibility: Track one-time activation, two-turn duration, bill discount and satisfaction recovery.
+ * Responsibility: Apply the Happy Hour bill discount after the customer discount; lock the resulting price when the order is taken.
  */
