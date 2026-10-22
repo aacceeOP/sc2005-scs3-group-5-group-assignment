@@ -88,4 +88,48 @@ public class Waiter extends Staff {
 
         return order;
     }
+
+    public void serveOrder(Order order, int currentTurn) {
+        if (!isAvailable()) {
+            throw new IllegalStateException(
+                "This waiter has already acted this turn."
+            );
+        }
+
+        if (order == null) {
+            throw new IllegalArgumentException(
+                "Order must not be null."
+            );
+        }
+
+        if (currentTurn < 1) {
+            throw new IllegalArgumentException(
+                "Turn number must be at least 1."
+            );
+        }
+
+        if (!order.canServe(currentTurn)) {
+            throw new IllegalStateException(
+                "Order must have been ready before this turn."
+            );
+        }
+
+        Customer customer = order.getCustomer();
+
+        if (customer == null) {
+            throw new IllegalStateException(
+                "Order must belong to a customer."
+            );
+        }
+
+        if (!customer.canReceiveOrder(order)) {
+            throw new IllegalStateException(
+                "Customer must be seated and waiting for this order."
+            );
+        }
+
+        order.markServed(currentTurn);
+        customer.receiveOrder(order, currentTurn);
+        completeTask();
+    }
 }
