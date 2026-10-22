@@ -35,10 +35,22 @@ public class Table {
         if (!isAvailable()) {
             throw new IllegalStateException("Table is already occupied.");
         }
+        if (!customer.isWaitingForTable()) {
+            throw new IllegalStateException(
+                "Customer is not waiting for a table."
+            );
+        }
+
+        customer.seatAt(this);
         this.customer = customer;
     }
 
     public void releaseTable() {
+        if (customer == null) {
+            return;
+        }
+
+        customer.clearTable();
         this.customer = null;
     }
 }
