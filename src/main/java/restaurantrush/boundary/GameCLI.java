@@ -37,7 +37,7 @@ public class GameCLI {
 
     public String getManagerChoice() {
     return inputHandler.readLine("Enter your choice: ");
-}
+
     }
     public void displayMessage(String message) {
         System.out.println(message);
