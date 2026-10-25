@@ -1,19 +1,17 @@
 
 package restaurantrush.boundary;
 
-import java.util.Scanner;
-
 import restaurantrush.control.GameController;
 import restaurantrush.control.GameResult;
 
 public class GameCLI {
 
     private GameController controller;
-    private final Scanner scanner;
+    private final InputHandler inputHandler;
 
     public GameCLI() {
         this.controller = new GameController();
-        this.scanner = new Scanner(System.in);
+        this.inputHandler = new InputHandler();
     }
 
     public void run() {
@@ -38,8 +36,8 @@ public class GameCLI {
     }
 
     public String getManagerChoice() {
-        System.out.print("Enter your choice: ");
-        return scanner.nextLine().trim();
+    return inputHandler.readLine("Enter your choice: ");
+}
     }
     public void displayMessage(String message) {
         System.out.println(message);
