@@ -69,7 +69,7 @@ public class GameState {
                     throw new IllegalArgumentException("The same Table object cannot be registered twice.");
                 }
             }
-            if (!table.isFree()) {
+            if (!table.isAvailable()) {
                 throw new IllegalArgumentException("Restaurant tables must be free during initial setup.");
             }
             validatedTables.add(table);
@@ -224,7 +224,7 @@ public class GameState {
 
     public Table getFreeTable() {
         for (Table table : tables) {
-            if (table.isFree()) {
+            if (table.isAvailable()) {
                 return table;
             }
         }
