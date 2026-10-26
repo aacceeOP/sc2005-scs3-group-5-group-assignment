@@ -6,8 +6,8 @@
 public enum CustomerStatus {
     QUEUED,
     SEATED,
-    WAITING_FOR_FOOD, // Order taken, food not yet SERVED
-    SERVED,           // Eating phase
+    WAITING_FOR_FOOD, 
+    SERVED,           
     READY_TO_PAY,
     PAID,
     ABANDONED
