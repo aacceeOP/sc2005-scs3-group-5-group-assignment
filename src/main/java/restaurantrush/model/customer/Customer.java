@@ -5,7 +5,7 @@
  */
 public abstract class Customer {
     protected int satisfaction = 100;
-    protected CustomerState state = CustomerState.QUEUED;
+    protected CustomerStatus state = CustomerStatus.QUEUED;
     protected Order currentOrder;
 
     protected abstract int getSatisfactionLossRate();
@@ -13,24 +13,24 @@ public abstract class Customer {
     public abstract double calculateBill();
 
     public void processWaitingTurn() {
-        if (state == CustomerState.QUEUED || state == CustomerState.SEATED || state == CustomerState.WAITING_FOR_FOOD) {
+        if (state == CustomerStatus.QUEUED || state == CustomerStatus.SEATED || state == CustomerStatus.WAITING_FOR_FOOD) {
             satisfaction -= getSatisfactionLossRate();
             if (satisfaction <= 0) {
                 satisfaction = 0; // Minimum 0
-                state = CustomerState.ABANDONED; 
+                state = CustomerStatus.ABANDONED; 
             }
         }
     }
 
     public void applyHappyHourBuff() {
-        if (state == CustomerState.QUEUED || state == CustomerState.SEATED || state == CustomerState.WAITING_FOR_FOOD) {
+        if (state == CustomerStatus.QUEUED || state == CustomerStatus.SEATED || state == CustomerStatus.WAITING_FOR_FOOD) {
             satisfaction = Math.min(100, satisfaction + 15);
         }
     }
 
     // Standard Getters and Setters
     public int getSatisfaction() { return satisfaction; }
-    public CustomerState getState() { return state; }
-    public void setState(CustomerState state) { this.state = state; }
+    public CustomerStatus getState() { return state; }
+    public void setState(CustomerStatus state) { this.state = state; }
     public Order getOrder() { return currentOrder; }
 }
