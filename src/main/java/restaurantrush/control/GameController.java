@@ -1,4 +1,4 @@
-package restaurantrush.controller;
+package restaurantrush.control;
 
 import restaurantrush.model.Order;
 import restaurantrush.model.OrderStatus;
