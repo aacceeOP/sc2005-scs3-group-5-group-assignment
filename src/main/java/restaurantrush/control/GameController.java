@@ -1,7 +1,7 @@
 package restaurantrush.control;
 
 import restaurantrush.model.Order;
-import restaurantrush.model.OrderStatus;
+import restaurantrush.model.enums.OrderStatus;
 import restaurantrush.model.Table;
 import restaurantrush.model.customer.Customer;
 import restaurantrush.model.menu.Menu;
@@ -418,7 +418,7 @@ public class GameController {
         // Proposed integration API: currentTurn must be recorded when an order
         // first becomes READY so Order.canServe(currentTurn) enforces next-turn serving.
         try {
-            gameState.getChef().prepare(order, gameState.getCurrentTurn());
+            gameState.getChef().prepareOrder(order, gameState.getCurrentTurn());
         } catch (IllegalArgumentException | IllegalStateException ex) {
             return reject(ex.getMessage() == null ? "Chef could not prepare that order." : ex.getMessage());
         }
@@ -514,7 +514,7 @@ public class GameController {
 
         // The Cashier collects/validates payment; controller records the result
         // and each state transition exactly once under the agreed API contract.
-        payableOrder.markPaid();
+        payableOrder.markPaid(currentTurn);
         oldestEligible.markPaid();
         gameState.recordPayment(oldestEligible, chargedCents);
         if (table != null) {

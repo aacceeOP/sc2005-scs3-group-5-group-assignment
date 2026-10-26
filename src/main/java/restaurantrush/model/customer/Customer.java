@@ -1,3 +1,9 @@
+package restaurantrush.model.customer;
+
+import restaurantrush.model.Order;
+import restaurantrush.model.enums.CustomerStatus;
+import restaurantrush.model.menu.Menu;
+
 /**
  * Customer.java
  * Stage: 1

@@ -1,3 +1,7 @@
+package restaurantrush.model.customer;
+
+import restaurantrush.model.menu.Menu;
+
 /**
  * VIPCustomer.java
  * Stage: 2

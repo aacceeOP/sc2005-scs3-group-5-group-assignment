@@ -1,3 +1,5 @@
+package restaurantrush.model.enums;
+
 /**
  * CustomerStatus.java
  * Stage: 1
