@@ -6,7 +6,7 @@
 public class VIPCustomer extends Customer {
     @Override
     protected int getSatisfactionLossRate() {
-        return 5; // More patient, loses 5 points[cite: 1]
+        return 5; 
     }
 
     @Override
@@ -16,7 +16,6 @@ public class VIPCustomer extends Customer {
 
     @Override
     public double calculateBill() {
-        // VIPs get 10% off[cite: 1]
         return currentOrder.getPrice() * 0.90; 
     }
 }
