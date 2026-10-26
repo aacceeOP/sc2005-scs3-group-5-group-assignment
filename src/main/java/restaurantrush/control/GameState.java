@@ -1,3 +1,4 @@
+package restaurantrush.control;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;
