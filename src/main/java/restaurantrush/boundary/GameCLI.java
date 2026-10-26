@@ -3,42 +3,71 @@ package restaurantrush.boundary;
 
 import restaurantrush.control.GameController;
 import restaurantrush.control.GameResult;
+import restaurantrush.model.Table;
 
 public class GameCLI {
 
-    private GameController controller;
+    private final GameController controller;
     private final InputHandler inputHandler;
 
-    public GameCLI() {
-        this.controller = new GameController();
+    public GameCLI(GameController controller) {
+        this.controller = controller;
         this.inputHandler = new InputHandler();
     }
 
     public void run() {
         controller.startGame();
 
-        GameResult result = controller.checkResult();
-
-        while (result == GameResult.IN_PROGRESS) {
+        while (!controller.isGameOver()) {
             displayState();
 
-            String choice = getManagerChoice();
-            controller.processManagerChoice(choice);
-            controller.playTurn();
+            String answer = inputHandler.readLine(
+                "Activate Happy Hour this turn? (y/n): "
+            );
+            boolean activateHappyHour =
+                answer.equalsIgnoreCase("y");
 
-            result = controller.checkResult();
+            controller.beginTurn(activateHappyHour);
+
+            while (!controller.isTurnComplete()) {
+                String choice = inputHandler.readLine(
+                    "Enter manager command: "
+                );
+
+                boolean accepted =
+                    controller.processManagerChoice(choice);
+
+                if (!accepted) {
+                    displayMessage(
+                        controller.getLastErrorMessage()
+                    );
+                }
+            }
+
+            controller.finishTurn();
         }
 
-        displayResult(result);
+        displayResult(controller.checkResult());
     }
+
     public void displayState() {
-        // Placeholder for displaying customers, staff, orders and tables.
+        System.out.println("\n--- Restaurant Rush ---");
+        System.out.println(
+            "Turn: " + controller.getCurrentTurn()
+        );
+        System.out.println("--- Tables ---");
+
+        for (Table table : controller.getTables()) {
+            String status = table.isAvailable()
+                ? "Available"
+                : "Occupied";
+
+            System.out.println(
+                "Table " + table.getTableId() + ": " + status
+            );
+        }
     }
 
-    public String getManagerChoice() {
-    return inputHandler.readLine("Enter your choice: ");
-
-    }
     public void displayMessage(String message) {
         System.out.println(message);
     }
