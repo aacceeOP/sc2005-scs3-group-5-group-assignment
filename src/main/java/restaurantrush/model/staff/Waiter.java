@@ -129,7 +129,7 @@ public class Waiter extends Staff {
         }
 
         order.markServed(currentTurn);
-        customer.receiveOrder(order, currentTurn);
+        // The controller updates the customer after successful serving.
         completeTask();
     }
 }

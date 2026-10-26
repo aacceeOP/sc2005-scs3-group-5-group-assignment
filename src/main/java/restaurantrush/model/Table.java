@@ -28,6 +28,11 @@ public class Table {
         return customer == null;
     }
 
+    /** Alias used by the controller when checking table occupancy. */
+    public boolean isFree() {
+        return isAvailable();
+    }
+
     public void seatCustomer(Customer customer) {
         if (customer == null) {
             throw new IllegalArgumentException("Customer must not be null.");
