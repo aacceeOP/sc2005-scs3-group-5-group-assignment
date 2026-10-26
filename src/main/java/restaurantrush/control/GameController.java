@@ -426,7 +426,7 @@ public class GameController {
     }
 
     private void validateSuccessfulSeating(Customer customer, Table table) {
-        if (table.isFree() || customer.getTable() != table) {
+        if (table.isAvailable() || customer.getTable() != table) {
             throw new IllegalStateException(
                     "Staff seating must occupy the table and assign it to the customer.");
         }
