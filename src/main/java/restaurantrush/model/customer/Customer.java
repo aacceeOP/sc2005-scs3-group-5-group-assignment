@@ -12,7 +12,7 @@ import restaurantrush.model.menu.Menu;
 public abstract class Customer {
     private final int id;
     protected int satisfaction = 100;
-    protected CustomerState state = CustomerState.QUEUED;
+    protected CustomerStatus state = CustomerStatus.QUEUED;
     protected Order currentOrder;
     
     protected abstract int getSatisfactionLossRate();
@@ -25,52 +25,52 @@ public abstract class Customer {
 
     public int getId() { return id; }
     public int getSatisfaction() { return satisfaction; }
-    public CustomerState getState() { return state; }
+    public CustomerStatus getState() { return state; }
     public Order getOrder() { return currentOrder; }
 
-    public boolean isEligibleForSeating() { return state == CustomerState.QUEUED; }
-    public boolean isEligibleForOrdering() { return state == CustomerState.SEATED; }
-    public boolean isReadyToPay() { return state == CustomerState.READY_TO_PAY; }
+    public boolean isEligibleForSeating() { return state == CustomerStatus.QUEUED; }
+    public boolean isEligibleForOrdering() { return state == CustomerStatus.SEATED; }
+    public boolean isReadyToPay() { return state == CustomerStatus.READY_TO_PAY; }
 
     public void seatAtTable() {
-        if (isEligibleForSeating()) this.state = CustomerState.SEATED;
+        if (isEligibleForSeating()) this.state = CustomerStatus.SEATED;
     }
 
     public void placeOrder(Order order) {
         this.currentOrder = order;
-        this.state = CustomerState.WAITING_FOR_FOOD;
+        this.state = CustomerStatus.WAITING_FOR_FOOD;
     }
 
     public void receiveFood() {
-        if (this.state == CustomerState.WAITING_FOR_FOOD) {
-            this.state = CustomerState.SERVED;
+        if (this.state == CustomerStatus.WAITING_FOR_FOOD) {
+            this.state = CustomerStatus.SERVED;
         }
     }
 
     public void finishEating() {
-        if (this.state == CustomerState.SERVED) {
-            this.state = CustomerState.READY_TO_PAY;
+        if (this.state == CustomerStatus.SERVED) {
+            this.state = CustomerStatus.READY_TO_PAY;
         }
     }
 
     public void completePayment() {
-        if (this.state == CustomerState.READY_TO_PAY) {
-            this.state = CustomerState.PAID;
+        if (this.state == CustomerStatus.READY_TO_PAY) {
+            this.state = CustomerStatus.PAID;
         }
     }
 
     public void processWaitingTurn() {
-        if (state == CustomerState.QUEUED || state == CustomerState.SEATED || state == CustomerState.WAITING_FOR_FOOD) {
+        if (state == CustomerStatus.QUEUED || state == CustomerStatus.SEATED || state == CustomerStatus.WAITING_FOR_FOOD) {
             satisfaction -= getSatisfactionLossRate();
             if (satisfaction <= 0) {
                 satisfaction = 0; 
-                state = CustomerState.ABANDONED; 
+                state = CustomerStatus.ABANDONED; 
             }
         }
     }
 
     public void applyHappyHourBuff() {
-        if (state == CustomerState.QUEUED || state == CustomerState.SEATED || state == CustomerState.WAITING_FOR_FOOD) {
+        if (state == CustomerStatus.QUEUED || state == CustomerStatus.SEATED || state == CustomerStatus.WAITING_FOR_FOOD) {
             satisfaction = Math.min(100, satisfaction + 15);
         }
     }
