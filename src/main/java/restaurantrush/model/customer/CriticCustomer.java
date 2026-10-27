@@ -1,25 +1,35 @@
 package restaurantrush.model.customer;
 
 import restaurantrush.model.menu.Menu;
+import restaurantrush.model.menu.MenuItem;
 
-/**
- * CriticCustomer.java
- * Stage: 2
- * Responsibility: Represent critic satisfaction loss and distinct order preference or service reaction.
- */
 public class CriticCustomer extends Customer {
+
+    public CriticCustomer(int id) { 
+        super(id); 
+    }
+
     @Override
     protected int getSatisfactionLossRate() {
         return 12; 
     }
 
     @Override
-    public void placeOrder(Menu menu) {
-        this.currentOrder = menu.getMostExpensiveItem(); 
+    public double getDiscountRate() {
+        return 0.0; 
     }
 
     @Override
-    public double calculateBill() {
-        return currentOrder.getPrice(); 
+    public MenuItem chooseMenuItem(Menu menu) {
+        MenuItem mostExpensive = null;
+        int maxPriceCents = -1;
+
+        for (MenuItem item : menu.getItems()) {
+            if (item.getPriceCents() > maxPriceCents) {
+                maxPriceCents = item.getPriceCents();
+                mostExpensive = item;
+            }
+        }
+        return mostExpensive;
     }
 }
