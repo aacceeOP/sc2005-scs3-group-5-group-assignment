@@ -1,3 +1,5 @@
+package restaurantrush.model.customer;
+
 import java.util.List;
 import java.util.Random;
 import restaurantrush.model.menu.Menu;
@@ -22,7 +24,7 @@ public class RegularCustomer extends Customer {
 
     @Override
     public MenuItem chooseMenuItem(Menu menu) {
-        List<MenuItem> available = menu.getItems();
+        List<MenuItem> available = getAvailableMenuItems(menu);
         return available.get(random.nextInt(available.size()));
     }
 }

@@ -24,7 +24,7 @@ public class CriticCustomer extends Customer {
         MenuItem mostExpensive = null;
         int maxPriceCents = -1;
 
-        for (MenuItem item : menu.getItems()) {
+        for (MenuItem item : getAvailableMenuItems(menu)) {
             if (item.getPriceCents() > maxPriceCents) {
                 maxPriceCents = item.getPriceCents();
                 mostExpensive = item;
