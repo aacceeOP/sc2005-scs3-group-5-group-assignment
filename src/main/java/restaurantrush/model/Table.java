@@ -1,6 +1,7 @@
 package restaurantrush.model;
 
 import restaurantrush.model.customer.Customer;
+import restaurantrush.model.enums.CustomerStatus;
 
 /**
  * Table.java
@@ -53,6 +54,14 @@ public class Table {
     public void releaseTable() {
         if (customer == null) {
             return;
+        }
+
+        CustomerStatus state = customer.getState();
+        if (state != CustomerStatus.PAID
+                && state != CustomerStatus.ABANDONED) {
+            throw new IllegalStateException(
+                "Table can only be released after payment or abandonment."
+            );
         }
 
         customer.clearTable();
