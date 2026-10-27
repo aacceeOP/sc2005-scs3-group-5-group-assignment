@@ -1,25 +1,30 @@
 package restaurantrush.model.customer;
 
+import java.util.List;
+import java.util.Random;
 import restaurantrush.model.menu.Menu;
+import restaurantrush.model.menu.MenuItem;
 
-/**
- * VIPCustomer.java
- * Stage: 2
- * Responsibility: Represent VIP satisfaction loss and bill discount.
- */
 public class VIPCustomer extends Customer {
+    private final Random random = new Random(67890); 
+
+    public VIPCustomer(int id) { 
+        super(id); 
+    }
+
     @Override
     protected int getSatisfactionLossRate() {
         return 5; 
     }
 
     @Override
-    public void placeOrder(Menu menu) {
-        this.currentOrder = menu.getRandomItem(); 
+    public double getDiscountRate() {
+        return 0.10; 
     }
 
     @Override
-    public double calculateBill() {
-        return currentOrder.getPrice() * 0.90; 
+    public MenuItem chooseMenuItem(Menu menu) {
+        List<MenuItem> available = menu.getItems();
+        return available.get(random.nextInt(available.size()));
     }
 }
