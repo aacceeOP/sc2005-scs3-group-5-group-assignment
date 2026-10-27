@@ -1,25 +1,28 @@
-package restaurantrush.model.customer;
-
+import java.util.List;
+import java.util.Random;
 import restaurantrush.model.menu.Menu;
+import restaurantrush.model.menu.MenuItem;
 
-/**
- * RegularCustomer.java
- * Stage: 1
- * Responsibility: Represent regular customer satisfaction, pricing and food choice.
- */
 public class RegularCustomer extends Customer {
+    private final Random random = new Random(12345); 
+
+    public RegularCustomer(int id) { 
+        super(id); 
+    }
+
     @Override
     protected int getSatisfactionLossRate() {
         return 8; 
     }
 
     @Override
-    public void placeOrder(Menu menu) {
-        this.currentOrder = menu.getRandomItem(); 
+    public double getDiscountRate() {
+        return 0.0; 
     }
 
     @Override
-    public double calculateBill() {
-        return currentOrder.getPrice(); 
+    public MenuItem chooseMenuItem(Menu menu) {
+        List<MenuItem> available = menu.getItems();
+        return available.get(random.nextInt(available.size()));
     }
 }
