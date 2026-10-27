@@ -41,6 +41,18 @@ public class Cashier extends Staff {
             );
         }
 
+        if (customer.getOrder() != order) {
+            throw new IllegalArgumentException(
+                "Order must be the customer's assigned order."
+            );
+        }
+
+        if (!customer.isReadyToPay()) {
+            throw new IllegalStateException(
+                "Customer must be ready to pay."
+            );
+        }
+
         if (order.getStatus() != OrderStatus.SERVED) {
             throw new IllegalStateException(
                 "Only a served, unpaid order can be charged."
