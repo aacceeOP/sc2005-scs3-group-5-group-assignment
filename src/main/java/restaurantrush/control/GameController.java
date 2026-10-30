@@ -6,10 +6,12 @@ import restaurantrush.model.Table;
 import restaurantrush.model.customer.Customer;
 import restaurantrush.model.menu.Menu;
 import restaurantrush.model.pricing.PricingPolicy;
-import restaurantrush.model.pricing.HappyHourPolicy;
+// Stage 3 deferred: preserved for later integration.
+// import restaurantrush.model.pricing.HappyHourPolicy;
 import restaurantrush.model.staff.Cashier;
 import restaurantrush.model.staff.Chef;
-import restaurantrush.model.staff.Host;
+// Stage 3 deferred: preserved for later integration.
+// import restaurantrush.model.staff.Host;
 import restaurantrush.model.staff.Waiter;
 
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ import java.util.Objects;
 
 /**
  * Coordinates Restaurant Rush turns. The CLI owns all input/output and calls:
- * startGame(), beginTurn(...), one choice per active phase, then finishTurn().
+ * startGame(), beginTurn(), one choice per active phase, then finishTurn().
  *
  * Integration notes:
  * - Waiter.takeOrder(Customer, Menu, PricingPolicy, int) creates and attaches
@@ -42,12 +44,15 @@ public class GameController {
     private final GameState gameState;
     private final Menu menu;
     private final PricingPolicy pricingPolicy;
-    private final HappyHourPolicy happyHourPolicy;
-    private final boolean stage3Enabled;
+    // Stage 3 deferred: preserved for later integration.
+//     private final HappyHourPolicy happyHourPolicy;
+    // Stage 3 deferred: preserved for later integration.
+//     private final boolean stage3Enabled;
 
     private boolean gameStarted;
     private boolean turnStarted;
-    private boolean happyHourRequestRejectedThisTurn;
+    // Stage 3 deferred: preserved for later integration.
+//     private boolean happyHourRequestRejectedThisTurn;
     private int managerChoicePhase;
     private String lastErrorMessage = "";
 
@@ -58,14 +63,18 @@ public class GameController {
     public GameController(
             GameState gameState,
             Menu menu,
-            PricingPolicy pricingPolicy,
-            HappyHourPolicy happyHourPolicy,
-            boolean stage3Enabled) {
+            // Stage 3 deferred: preserved for later integration.
+//             PricingPolicy pricingPolicy,
+//             HappyHourPolicy happyHourPolicy,
+//             boolean stage3Enabled) {
+            PricingPolicy pricingPolicy) {
         this.gameState = Objects.requireNonNull(gameState, "gameState");
         this.menu = Objects.requireNonNull(menu, "menu");
         this.pricingPolicy = Objects.requireNonNull(pricingPolicy, "pricingPolicy");
-        this.happyHourPolicy = Objects.requireNonNull(happyHourPolicy, "happyHourPolicy");
-        this.stage3Enabled = stage3Enabled;
+        // Stage 3 deferred: preserved for later integration.
+//         this.happyHourPolicy = Objects.requireNonNull(happyHourPolicy, "happyHourPolicy");
+        // Stage 3 deferred: preserved for later integration.
+//         this.stage3Enabled = stage3Enabled;
     }
 
     /**
@@ -84,18 +93,21 @@ public class GameController {
         if (gameState.getTables().size() != 2) {
             throw new IllegalStateException("The restaurant must start with exactly two tables.");
         }
-        if (stage3Enabled && gameState.getHost() == null) {
-            throw new IllegalStateException("Stage 3 requires a Host.");
-        }
+        // Stage 3 deferred: preserved for later integration.
+//         if (stage3Enabled && gameState.getHost() == null) {
+//             throw new IllegalStateException("Stage 3 requires a Host.");
+//         }
         gameStarted = true;
     }
 
     /**
-     * Starts one turn. Resets each active staff member exactly once, handles
-     * Happy Hour, then activates scheduled arrivals. The CLI should display the
+     * Starts one turn. Resets each active staff member exactly once, then
+     * activates scheduled arrivals. The CLI should display the
      * state only after this method returns.
      */
-    public void beginTurn(boolean activateHappyHour) {
+    // Stage 3 deferred: preserved for later integration.
+//     public void beginTurn(boolean activateHappyHour) {
+    public void beginTurn() {
         requireStarted();
         if (isGameOver()) {
             throw new IllegalStateException("The game has ended.");
@@ -110,12 +122,13 @@ public class GameController {
         }
 
         resetActiveStaffForTurn();
-        happyHourRequestRejectedThisTurn = activateHappyHour
-                && !happyHourPolicy.activate(currentTurn);
-        // Activate scheduled customers before applying the turn-start bonus so
-        // every customer who is waiting during this turn's start is eligible.
+        // Stage 3 deferred: preserved for later integration.
+//         happyHourRequestRejectedThisTurn = activateHappyHour
+//                 && !happyHourPolicy.activate(currentTurn);
+        // Activate scheduled customers at the start of the turn.
         processArrivals(currentTurn);
-        applyTurnStartEffects(currentTurn);
+        // Stage 3 deferred: preserved for later integration.
+//         applyTurnStartEffects(currentTurn);
 
         managerChoicePhase = 0;
         turnStarted = true;
@@ -126,7 +139,6 @@ public class GameController {
      * Accepts one action for the current phase. Invalid actions return false,
      * set a readable CLI message, and leave the same phase available for retry.
      * Commands:
-     *   HOST:SEAT:<customerId>          (Stage 3 only)
      *   WAITER:SEAT:<customerId>
      *   WAITER:TAKE_ORDER:<customerId>
      *   WAITER:SERVE:<orderId>
@@ -155,9 +167,11 @@ public class GameController {
 
         String phase = getCurrentPhase();
         boolean successful;
-        if ("HOST".equals(phase)) {
-            successful = processHostChoice(parts);
-        } else if ("WAITER".equals(phase)) {
+        // Stage 3 deferred: preserved for later integration.
+//         if ("HOST".equals(phase)) {
+//             successful = processHostChoice(parts);
+//         } else if ("WAITER".equals(phase)) {
+        if ("WAITER".equals(phase)) {
             successful = processWaiterChoice(parts);
         } else {
             successful = processChefChoice(parts);
@@ -189,9 +203,10 @@ public class GameController {
         turnStarted = false;
     }
 
-    public boolean wasHappyHourRequestRejectedThisTurn() {
-        return happyHourRequestRejectedThisTurn;
-    }
+    // Stage 3 deferred: preserved for later integration.
+//     public boolean wasHappyHourRequestRejectedThisTurn() {
+//         return happyHourRequestRejectedThisTurn;
+//     }
 
     /** The CLI should show this message when processManagerChoice returns false. */
     public String getLastErrorMessage() {
@@ -218,62 +233,67 @@ public class GameController {
         gameState.getWaiter().resetForNewTurn();
         gameState.getChef().resetForNewTurn();
         gameState.getCashier().resetForNewTurn();
-        if (stage3Enabled) {
-            gameState.getHost().resetForNewTurn();
-        }
+        // Stage 3 deferred: preserved for later integration.
+//         if (stage3Enabled) {
+//             gameState.getHost().resetForNewTurn();
+//         }
     }
 
     private int getPhaseCount() {
-        return stage3Enabled ? 3 : 2;
+        // Stage 3 deferred: preserved for later integration.
+//         return stage3Enabled ? 3 : 2;
+        return 2;
     }
 
     private String getCurrentPhase() {
-        if (stage3Enabled) {
-            if (managerChoicePhase == 0) return "HOST";
-            if (managerChoicePhase == 1) return "WAITER";
-            return "CHEF";
-        }
+        // Stage 3 deferred: preserved for later integration.
+//         if (stage3Enabled) {
+//             if (managerChoicePhase == 0) return "HOST";
+//             if (managerChoicePhase == 1) return "WAITER";
+//             return "CHEF";
+//         }
         return managerChoicePhase == 0 ? "WAITER" : "CHEF";
     }
 
-    private boolean processHostChoice(String[] parts) {
-        if (!stage3Enabled) {
-            return reject("Host seating is only available in Stage 3.");
-        }
-        if (parts.length != 3
-                || !parts[0].equalsIgnoreCase("HOST")
-                || !parts[1].equalsIgnoreCase("SEAT")) {
-            return reject("Use HOST:SEAT:<customerId> or PHASE:PASS.");
-        }
-
-        Customer customer = findActiveCustomer(parsePositiveId(parts[2]));
-        if (customer == null) {
-            return reject("That customer is not an active member of this restaurant.");
-        }
-        if (!gameState.isInWaitingQueue(customer) || !customer.isWaitingForTable()) {
-            return reject("Select a customer who is waiting for a table.");
-        }
-
-        Table table = gameState.getFreeTable();
-        if (table == null) {
-            return reject("There is no free table.");
-        }
-        if (!gameState.containsTable(table)) {
-            return reject("The selected table does not belong to this restaurant.");
-        }
-
-        // Host owns the seating state changes; the controller only updates queue membership.
-        try {
-            gameState.getHost().seatCustomer(customer, table);
-        } catch (IllegalArgumentException | IllegalStateException ex) {
-            return reject(ex.getMessage() == null ? "Host could not seat that customer." : ex.getMessage());
-        }
-        validateSuccessfulSeating(customer, table);
-        if (!gameState.removeFromWaitingQueue(customer)) {
-            throw new IllegalStateException("Customer was seated but was not removable from the waiting queue.");
-        }
-        return true;
-    }
+    // Stage 3 deferred: preserved for later integration.
+//     private boolean processHostChoice(String[] parts) {
+//         if (!stage3Enabled) {
+//             return reject("Host seating is only available in Stage 3.");
+//         }
+//         if (parts.length != 3
+//                 || !parts[0].equalsIgnoreCase("HOST")
+//                 || !parts[1].equalsIgnoreCase("SEAT")) {
+//             return reject("Use HOST:SEAT:<customerId> or PHASE:PASS.");
+//         }
+//
+//         Customer customer = findActiveCustomer(parsePositiveId(parts[2]));
+//         if (customer == null) {
+//             return reject("That customer is not an active member of this restaurant.");
+//         }
+//         if (!gameState.isInWaitingQueue(customer) || !customer.isWaitingForTable()) {
+//             return reject("Select a customer who is waiting for a table.");
+//         }
+//
+//         Table table = gameState.getFreeTable();
+//         if (table == null) {
+//             return reject("There is no free table.");
+//         }
+//         if (!gameState.containsTable(table)) {
+//             return reject("The selected table does not belong to this restaurant.");
+//         }
+//
+//         // Host owns the seating state changes; the controller only updates queue membership.
+//         try {
+//             gameState.getHost().seatCustomer(customer, table);
+//         } catch (IllegalArgumentException | IllegalStateException ex) {
+//             return reject(ex.getMessage() == null ? "Host could not seat that customer." : ex.getMessage());
+//         }
+//         validateSuccessfulSeating(customer, table);
+//         if (!gameState.removeFromWaitingQueue(customer)) {
+//             throw new IllegalStateException("Customer was seated but was not removable from the waiting queue.");
+//         }
+//         return true;
+//     }
 
     private boolean processWaiterChoice(String[] parts) {
         if (parts.length < 2 || !parts[0].equalsIgnoreCase("WAITER")) {
@@ -438,19 +458,20 @@ public class GameController {
         }
     }
 
-    private void applyTurnStartEffects(int currentTurn) {
-        if (!happyHourPolicy.isActive(currentTurn)) {
-            return;
-        }
-
-        List<Customer> eligible = new ArrayList<>();
-        for (Customer customer : gameState.getCustomers()) {
-            if (customer.isWaitingForTable() || customer.getTable() != null) {
-                eligible.add(customer);
-            }
-        }
-        happyHourPolicy.applySatisfactionBonus(eligible);
-    }
+    // Stage 3 deferred: preserved for later integration.
+//     private void applyTurnStartEffects(int currentTurn) {
+//         if (!happyHourPolicy.isActive(currentTurn)) {
+//             return;
+//         }
+//
+//         List<Customer> eligible = new ArrayList<>();
+//         for (Customer customer : gameState.getCustomers()) {
+//             if (customer.isWaitingForTable() || customer.getTable() != null) {
+//                 eligible.add(customer);
+//             }
+//         }
+//         happyHourPolicy.applySatisfactionBonus(eligible);
+//     }
 
     /**
      * Served on T -> READY_TO_PAY at the end of T+1 -> payment at the earliest
