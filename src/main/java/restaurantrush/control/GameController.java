@@ -213,6 +213,18 @@ public class GameController {
         return lastErrorMessage;
     }
 
+    public boolean isTurnComplete() {
+        return turnStarted && managerChoicePhase >= getPhaseCount();
+    }
+
+    public int getCurrentTurn() {
+        return gameState.getCurrentTurn();
+    }
+
+    public List<Table> getTables() {
+        return gameState.getTables();
+    }
+
     public boolean isGameOver() {
         return gameState.getCurrentTurn() > FINAL_TURN;
     }
@@ -245,7 +257,7 @@ public class GameController {
         return 2;
     }
 
-    private String getCurrentPhase() {
+    public String getCurrentPhase() {
         // Stage 3 deferred: preserved for later integration.
 //         if (stage3Enabled) {
 //             if (managerChoicePhase == 0) return "HOST";
