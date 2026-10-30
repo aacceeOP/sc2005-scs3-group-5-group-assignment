@@ -544,13 +544,14 @@ public class GameController {
     }
 
     private void processAbandonment() {
-        // Use a snapshot because the waiting queue is modified as customers leave.
-        for (Customer customer : gameState.getWaitingCustomers()) {
-            if (!customer.isWaitingForTable()) {
+        for (Customer customer : gameState.getCustomers()) {
+            if (!customer.isWaitingForService()) {
                 continue;
             }
-            customer.loseSatisfaction(customer.getWaitingLoss());
-            if (customer.getSatisfaction() <= 0) {
+
+            customer.processWaitingTurn();
+
+            if (customer.getSatisfaction() == 0) {
                 abandonCustomer(customer);
             }
         }
