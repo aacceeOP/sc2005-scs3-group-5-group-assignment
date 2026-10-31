@@ -1,11 +1,13 @@
 package restaurantrush.control;
 
 import restaurantrush.model.Order;
+import restaurantrush.model.enums.CustomerStatus;
 import restaurantrush.model.Table;
 import restaurantrush.model.customer.Customer;
 import restaurantrush.model.staff.Cashier;
 import restaurantrush.model.staff.Chef;
-import restaurantrush.model.staff.Host;
+// Stage 3 deferred: preserved for later integration.
+// import restaurantrush.model.staff.Host;
 import restaurantrush.model.staff.Waiter;
 
 import java.util.ArrayDeque;
@@ -45,7 +47,8 @@ public class GameState {
     private Waiter waiter;
     private Chef chef;
     private Cashier cashier;
-    private Host host; // null is allowed before Stage 3
+    // Stage 3 deferred: preserved for later integration.
+//     private Host host; // null is allowed before Stage 3
 
     public GameState() {
         // Call configureRestaurant(...) before GameController.startGame().
@@ -53,14 +56,16 @@ public class GameState {
 
     /**
      * Injects restaurant resources. The base setup must contain two distinct
-     * tables. Pass host=null for Stages 1/2 and a Host for Stage 3.
+     * tables and the Stage 1 staff. Host setup is deferred to Stage 3.
      */
     public void configureRestaurant(
             List<Table> initialTables,
             Waiter waiter,
             Chef chef,
-            Cashier cashier,
-            Host host) {
+            // Stage 3 deferred: preserved for later integration.
+//             Cashier cashier,
+//             Host host) {
+            Cashier cashier) {
         if (configured) {
             throw new IllegalStateException("Restaurant resources have already been configured.");
         }
@@ -90,7 +95,8 @@ public class GameState {
         this.waiter = waiter;
         this.chef = chef;
         this.cashier = cashier;
-        this.host = host;
+        // Stage 3 deferred: preserved for later integration.
+//         this.host = host;
         configured = true;
     }
 
@@ -270,6 +276,31 @@ public class GameState {
         return customer != null && paidSatisfactionSnapshots.containsKey(customer);
     }
 
+    /** Cumulative customers served, including those who have since paid. */
+    public int getServedCustomerCount() {
+        int count = 0;
+        for (Customer customer : customers) {
+            if (customer.getServedTurn() >= 1) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getUnhappyDepartureCount() {
+        int count = 0;
+        for (Customer customer : customers) {
+            if (customer.getState() == CustomerStatus.ABANDONED) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getTurnsUsed() {
+        return currentTurn - 1;
+    }
+
     public int getPaidCustomerCount() {
         return paidSatisfactionSnapshots.size();
     }
@@ -297,9 +328,10 @@ public class GameState {
         return cashier;
     }
 
-    public Host getHost() {
-        return host;
-    }
+    // Stage 3 deferred: preserved for later integration.
+//     public Host getHost() {
+//         return host;
+//     }
 
     private static boolean containsIdentity(List<Customer> values, Customer target) {
         for (Customer value : values) {

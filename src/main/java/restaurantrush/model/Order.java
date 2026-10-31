@@ -16,6 +16,8 @@ import restaurantrush.model.menu.MenuItem;
  * The bill is locked when the order is created.
  */
 public class Order {
+    private static int nextOrderId = 1;
+    private final int orderId;
     private final Customer customer;
     private final MenuItem item;
     private final int billCents;
@@ -48,6 +50,7 @@ public class Order {
             );
         }
 
+        this.orderId = nextOrderId++;
         this.customer = customer;
         this.item = item;
         this.billCents = billCents;
@@ -57,6 +60,10 @@ public class Order {
         this.preparationProgress = 0;
         this.readyTurn = -1;
         this.servedTurn = -1;
+    }
+
+    public int getOrderId() {
+        return orderId;
     }
 
     public Customer getCustomer() {
@@ -133,7 +140,7 @@ public class Order {
 
     /**
      * Marks the order served. Customer state is updated separately
-     * by the Waiter after its eligibility checks have passed.
+     * by the controller after the Waiter successfully serves the order.
      */
     public void markServed(int currentTurn) {
         validateTurn(currentTurn);

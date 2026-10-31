@@ -162,11 +162,12 @@ public abstract class Customer {
         state = CustomerStatus.ABANDONED;
     }
 
-    public void applyHappyHourBuff() {
-        if (isWaitingForService()) {
-            satisfaction = Math.min(100, satisfaction + 15);
-        }
-    }
+    // Stage 3 deferred: preserved for later integration.
+//     public void applyHappyHourBuff() {
+//         if (isWaitingForService()) {
+//             satisfaction = Math.min(100, satisfaction + 15);
+//         }
+//     }
 
     protected List<MenuItem> getAvailableMenuItems(Menu menu) {
         if (menu == null) {
