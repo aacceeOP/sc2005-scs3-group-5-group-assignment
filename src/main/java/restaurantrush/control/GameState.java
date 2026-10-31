@@ -1,6 +1,7 @@
 package restaurantrush.control;
 
 import restaurantrush.model.Order;
+import restaurantrush.model.enums.CustomerStatus;
 import restaurantrush.model.Table;
 import restaurantrush.model.customer.Customer;
 import restaurantrush.model.staff.Cashier;
@@ -273,6 +274,31 @@ public class GameState {
 
     public boolean hasRecordedPayment(Customer customer) {
         return customer != null && paidSatisfactionSnapshots.containsKey(customer);
+    }
+
+    /** Cumulative customers served, including those who have since paid. */
+    public int getServedCustomerCount() {
+        int count = 0;
+        for (Customer customer : customers) {
+            if (customer.getServedTurn() >= 1) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getUnhappyDepartureCount() {
+        int count = 0;
+        for (Customer customer : customers) {
+            if (customer.getState() == CustomerStatus.ABANDONED) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public int getTurnsUsed() {
+        return currentTurn - 1;
     }
 
     public int getPaidCustomerCount() {

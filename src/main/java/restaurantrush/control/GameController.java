@@ -245,6 +245,18 @@ public class GameController {
         return gameState.getAveragePaidSatisfaction();
     }
 
+    public int getServedCustomerCount() {
+        return gameState.getServedCustomerCount();
+    }
+
+    public int getUnhappyDepartureCount() {
+        return gameState.getUnhappyDepartureCount();
+    }
+
+    public int getTurnsUsed() {
+        return gameState.getTurnsUsed();
+    }
+
     public boolean isGameOver() {
         return gameState.getCurrentTurn() > FINAL_TURN;
     }
