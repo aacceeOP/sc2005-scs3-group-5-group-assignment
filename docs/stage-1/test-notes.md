@@ -4,11 +4,11 @@ Verified locally on 1 November 2026 using JDK 26.0.2.1. These results cover the 
 
 ## Build and controller checks
 
-All Java sources compiled successfully. A standalone controller harness outside the repository passed 294 assertions over four scenarios: complete victory, complete defeat, seated abandonment before ordering, and seated abandonment with an unfinished order. It checked arrivals, phases, failed-action availability, serving/payment timing, table cleanup, cancellation, payment totals, satisfaction snapshots and no early end. The external harness is not a repository test suite; the CLI replay inputs and outputs below are included for reproducibility.
+All Java sources compiled successfully. A standalone controller harness outside the repository passed 294 assertions over four scenarios: complete victory, complete defeat, seated abandonment before ordering, and seated abandonment with an unfinished order. It checked arrivals, phases, failed-action availability, serving/payment timing, table cleanup, cancellation, payment totals, satisfaction snapshots and no early end. The external harness is not a repository test suite; the CLI replay inputs, instructions and verified results below provide reproducible evidence.
 
 ## Victory replay
 
-[Input](victory-input.txt) and [captured output](victory-output.txt).
+[Replay input](victory-input.txt).
 
 For customer n from 1 to 6, use this three-turn pattern:
 
@@ -20,7 +20,7 @@ Final result: VICTORY, six customers served, zero unhappy departures, five paid 
 
 ## Defeat replay
 
-[Input](defeat-input.txt) and [captured output](defeat-output.txt).
+[Replay input](defeat-input.txt).
 
 For all 18 turns, choose Waiter 4 and Chef 2. Final result: DEFEAT, zero served, two unhappy departures, zero paid, $0.00 revenue, average N/A and 18 turns used. Later arrivals have not all reached zero satisfaction by turn 18.
 

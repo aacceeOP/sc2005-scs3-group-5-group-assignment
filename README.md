@@ -45,7 +45,7 @@ Victory after turn 18 requires at least four paid customers, $45 revenue and ave
 
 ## Reproducible evidence
 
-See [Stage 1 test notes](docs/stage-1/test-notes.md), including exact inputs and captured output for both endings.
+See [Stage 1 test notes](docs/stage-1/test-notes.md), including replay inputs, instructions and verified results for both endings.
 
 ```powershell
 Get-Content docs/stage-1/victory-input.txt | java -cp build/classes restaurantrush.Main
@@ -77,4 +77,4 @@ Keep these items accurate as work is completed. Submission deadline in the brief
 
 ## Development reference
 
-The previous shared interface requirements are preserved in [integration contracts](docs/integration-contracts.md). See [release checklist](docs/stage-1/release-checklist.md) before creating the Stage 1 tag.
+The previous shared interface requirements are preserved in [integration contracts](docs/integration-contracts.md).
