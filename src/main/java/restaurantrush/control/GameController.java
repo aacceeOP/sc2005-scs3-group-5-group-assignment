@@ -225,6 +225,26 @@ public class GameController {
         return gameState.getTables();
     }
 
+    public List<Customer> getWaitingCustomers() {
+        return gameState.getWaitingCustomers();
+    }
+
+    public List<Order> getOrders() {
+        return gameState.getOrders();
+    }
+
+    public int getRevenueCents() {
+        return gameState.getRevenueCents();
+    }
+
+    public int getPaidCustomerCount() {
+        return gameState.getPaidCustomerCount();
+    }
+
+    public double getAveragePaidSatisfaction() {
+        return gameState.getAveragePaidSatisfaction();
+    }
+
     public boolean isGameOver() {
         return gameState.getCurrentTurn() > FINAL_TURN;
     }
