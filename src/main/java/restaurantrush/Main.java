@@ -7,6 +7,8 @@ import restaurantrush.control.GameController;
 import restaurantrush.control.GameState;
 import restaurantrush.model.Table;
 import restaurantrush.model.customer.RegularCustomer;
+import restaurantrush.model.customer.VIPCustomer;
+import restaurantrush.model.customer.CriticCustomer;
 import restaurantrush.model.menu.Menu;
 import restaurantrush.model.pricing.StandardPricingPolicy;
 import restaurantrush.model.staff.Cashier;
