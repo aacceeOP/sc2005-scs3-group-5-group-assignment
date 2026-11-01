@@ -23,6 +23,7 @@ public abstract class Customer {
     protected abstract int getSatisfactionLossRate();
     public abstract double getDiscountRate();
     public abstract MenuItem chooseMenuItem(Menu menu);
+    public abstract String getCustomerType();
 
     public Customer(int id) {
         if (id < 1) {
