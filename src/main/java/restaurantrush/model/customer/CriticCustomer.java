@@ -24,6 +24,11 @@ public class CriticCustomer extends Customer {
     }
 
     @Override
+    public String getCustomerType() {
+        return "Critic";
+    }
+
+    @Override
     public MenuItem chooseMenuItem(Menu menu) {
         MenuItem mostExpensive = null;
         int maxPriceCents = -1;
