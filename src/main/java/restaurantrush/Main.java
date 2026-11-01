@@ -38,15 +38,13 @@ public class Main {
             tables, waiter, chef, cashier
         );
 
-        // Schedule six Regular customers.
-        int[] arrivalTurns = {1, 4, 7, 10, 13, 16};
-
-        for (int i = 0; i < arrivalTurns.length; i++) {
-            gameState.scheduleCustomerArrival(
-                arrivalTurns[i],
-                new RegularCustomer(i + 1)
-            );
-        }
+        // Stage 2: Schedule six customers, including a VIP and a Critic.
+        gameState.scheduleCustomerArrival(1, new RegularCustomer(1));
+        gameState.scheduleCustomerArrival(4, new VIPCustomer(2));
+        gameState.scheduleCustomerArrival(7, new RegularCustomer(3));
+        gameState.scheduleCustomerArrival(10, new CriticCustomer(4));
+        gameState.scheduleCustomerArrival(13, new RegularCustomer(5));
+        gameState.scheduleCustomerArrival(16, new RegularCustomer(6));
 
         // Menu already contains Salad, Burger and Pasta.
         Menu menu = new Menu();
