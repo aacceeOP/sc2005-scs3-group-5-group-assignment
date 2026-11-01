@@ -30,7 +30,6 @@ public class VIPCustomer extends Customer {
     public String getCustomerType() {
         return "VIP";
     }
-    
 
     @Override
     public MenuItem chooseMenuItem(Menu menu) {

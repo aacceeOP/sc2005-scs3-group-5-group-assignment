@@ -74,7 +74,7 @@ public class GameCLI {
                 customer.getCustomerId(),
                 customer.getCustomerType(),
                 customer.getSatisfaction());
-}
+        }
 
         System.out.println("\nTables:");
         for (Table table : controller.getTables()) {
@@ -99,7 +99,7 @@ public class GameCLI {
         }
         for (Order order : orders) {
             System.out.printf(
-                "Order %d | Customer %d | %s | %s | Status: %s | Preparation: %d/%d%n",
+                "Order %d | Customer %d | Type: %s | Item: %s | Status: %s | Preparation: %d/%d%n",
                     order.getOrderId(),
                     order.getCustomer().getCustomerId(),
                     order.getCustomer().getCustomerType(),
