@@ -1,20 +1,27 @@
-# SC2005 SCS3 Group 5 Group Assignment
+# Restaurant Rush Stage 1
 
-Restaurant Rush is a Java command-line restaurant management game for SC2002/SC2302. This version implements the Stage 1 game with numbered input. The repository name retains the group's original naming.
+Java command-line restaurant management game for SC2002/SC2302, using numbered action menus.
 
-Repository: https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment
+- [Group repository](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment)
+- [Stage 1 snapshot](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/tree/stage-1)
 
-## Current status
+## Stage 1 scope
 
-The local Stage 1 implementation compiled and passed the checks recorded on 1 November 2026 in [test notes](docs/stage-1/test-notes.md). The release commit and `stage-1` tag have not been created by the assistant. Confirm their publication before sharing a tag link.
+The game runs all 18 turns with two tables, one Waiter, one Chef and one Cashier. Six Regular customers arrive at the start of turns 1, 4, 7, 10, 13 and 16.
 
-Only Regular customers, the base menu, Waiter, Chef and Cashier are active. VIP/Critic, Host, combos and Happy Hour code is preserved as comments for later integration. This reflects asynchronous team development. Confirm that this treatment meets the briefing's stage-content requirement before final tagging; disabled source does not certify compliance.
+| Menu item | Price | Preparation units |
+| --- | --- | --- |
+| Salad | $9.00 | 1 |
+| Burger | $15.00 | 1 |
+| Pasta | $18.00 | 2 |
+
+Customers choose their own food using seeded randomness. Each Regular customer uses seed 12345; with the current menu order, their first choice is Burger. The manager chooses service priorities, not the food.
 
 ## Build and run
 
-Requires a JDK with `java` and `javac` on PATH. Verified with JDK 26.0.2.1. The source uses Java 11-era APIs; other JDK versions have not been verified.
+Install a JDK and make sure `java` and `javac` are available on PATH. Verified with JDK 26.0.2.1; other versions have not been verified. No network access or external Java libraries are required to play.
 
-Open PowerShell in the repository root, then run:
+Open PowerShell in the repository root and compile:
 
 ```powershell
 New-Item -ItemType Directory -Force build/classes | Out-Null
@@ -22,59 +29,54 @@ $javaSources = @(Get-ChildItem src/main/java -Recurse -Filter *.java | Select-Ob
 javac -d build/classes @javaSources
 ```
 
-If compilation succeeds:
+If compilation succeeds, start the game:
 
 ```powershell
 java -cp build/classes restaurantrush.Main
 ```
 
-For a fresh build, use an empty output directory. Do not commit generated `.class` files. Existing class files can survive recompilation when a class is later commented out.
+Use an empty output directory for a clean build. Generated `.class` files should not be committed.
 
-## Playing Stage 1
+## Controls and turn rules
 
-The game runs 18 turns with two tables. Six Regular customers arrive on turns 1, 4, 7, 10, 13 and 16. Salad costs $9 and needs one preparation unit; Burger costs $15 and needs one; Pasta costs $18 and needs two.
+- Waiter: **1** seat a customer, **2** take an order, **3** serve an order, **4** pass. Enter the displayed customer or order ID when prompted.
+- Chef: **1** prepare an order, **2** pass. Enter the order ID when prompted.
+- The Waiter acts before the Chef. Each has at most one successful task per turn; the Chef prepares one unit.
+- An order becoming READY this turn can be served next turn at the earliest.
+- Served on turn T means READY_TO_PAY on T+1 and payment no earlier than T+2. The Cashier automatically processes at most one eligible payment per turn, oldest-ready first.
+- Queued and seated customers who have not been served lose 8 satisfaction at turn end. At zero they leave without paying, unfinished orders are cancelled, and their table is released.
+- Invalid choices can be retried without consuming a task. Ending terminal input stops the unfinished game without declaring a result.
 
-- Waiter: 1 seat, 2 take order, 3 serve, 4 pass. Enter the displayed customer/order ID when prompted.
-- Chef: 1 prepare, 2 pass. The Chef acts after the Waiter.
-- Cashier acts automatically, collecting at most one eligible payment per turn, oldest-ready first.
-- Invalid input can be retried without consuming the staff action. End-of-input stops an unfinished game cleanly.
+The display shows the queue, tables, customer satisfaction, orders and current staff choices. End-of-turn summaries show cumulative served, unhappy departure and paid counts, revenue, average satisfaction recorded at payment, and turns used. Before any payment, the average is N/A.
 
-Each turn displays the queue, tables, orders and current choices. End-of-turn summaries use cumulative served/departure/paid counts, revenue, satisfaction recorded at payment and completed turns. With no payments, average satisfaction is N/A.
+Victory after turn 18 requires all three targets:
 
-Victory after turn 18 requires at least four paid customers, $45 revenue and average paid satisfaction of at least 60. The game does not end early. Customer 6 cannot pay by turn 18 under the required timing.
+- At least four paid customers.
+- Revenue of at least $45.00.
+- Average paid-customer satisfaction of at least 60.
 
-## Reproducible evidence
+Otherwise the result is defeat. There is no early ending. The turn-16 arrival cannot pay within 18 turns under the required timing.
 
-See [Stage 1 test notes](docs/stage-1/test-notes.md), including replay inputs, instructions and verified results for both endings.
+## Reproducible test runs
+
+See [Stage 1 test notes](docs/stage-1/test-notes.md) for instructions, results and verification scope.
+
+After compiling, run each replay in a fresh Java process:
 
 ```powershell
 Get-Content docs/stage-1/victory-input.txt | java -cp build/classes restaurantrush.Main
 Get-Content docs/stage-1/defeat-input.txt | java -cp build/classes restaurantrush.Main
 ```
 
-Start a fresh process for each replay. The current fixed random seed makes every Regular customer's first selection Burger; IDs start at 1 in a fresh process. Changing that policy requires updating the evidence.
+| Replay | Result | Served | Unhappy departures | Paid | Revenue | Average paid satisfaction | Turns |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| Victory | VICTORY | 6 | 0 | 5 | $75.00 | 84.0 | 18 |
+| Defeat | DEFEAT | 0 | 2 | 0 | $0.00 | N/A | 18 |
 
-## Stage releases and comparisons
+The inputs depend on the documented food-selection rule and order IDs starting at 1 in a fresh process. The sixth customer is served but unpaid in the victory replay. Later arrivals have not all reached zero satisfaction in the defeat replay.
 
-| Stage | Tag | Status |
-| --- | --- | --- |
-| 1 | `stage-1` | Tested locally; release/tag publication pending |
-| 2 | `stage-2` | Pending |
-| 3 | `stage-3` | Pending |
+## Stage 1 class diagram
 
-For Stage 1 to 2 and Stage 2 to 3, add the new files, existing files changed or deleted with reasons, regression results, and the real commit/compare links once those versions exist. Do not describe pre-existing preserved code as newly authored during a later stage.
+![Stage 1 class diagram](docs/diagrams/stage-1-class-diagram.png)
 
-## Design and submission links
-
-- Stage 1, Stage 2 and Stage 3 class diagrams: pending; each must match its tagged code.
-- Complex Stage 2 or Stage 3 sequence diagram: pending.
-- Group report with each member's named reflection: pending.
-- Approximately 15-minute video and member/section timestamps: pending.
-- Full ordered AI histories on each member's own branch: prepare at the end as agreed; links for all five members pending. A summary alone is insufficient.
-- Required declarations: pending.
-
-Keep these items accurate as work is completed. Submission deadline in the briefing: 15 November 2026 at 11:59 PM Singapore time; one submission per group, with accessible links.
-
-## Development reference
-
-The previous shared interface requirements are preserved in [integration contracts](docs/integration-contracts.md).
+[Open the full-resolution diagram](docs/diagrams/stage-1-class-diagram.png).
