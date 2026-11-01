@@ -27,6 +27,12 @@ public class VIPCustomer extends Customer {
     }
 
     @Override
+    public String getCustomerType() {
+        return "VIP";
+    }
+    
+
+    @Override
     public MenuItem chooseMenuItem(Menu menu) {
         List<MenuItem> available = getAvailableMenuItems(menu);
         return available.get(random.nextInt(available.size()));
