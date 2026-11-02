@@ -10,12 +10,11 @@ import restaurantrush.model.customer.RegularCustomer;
 import restaurantrush.model.customer.VIPCustomer;
 import restaurantrush.model.customer.CriticCustomer;
 import restaurantrush.model.menu.Menu;
-import restaurantrush.model.menu.MenuItem;
-import restaurantrush.model.menu.ComboMeal;
-import restaurantrush.model.pricing.HappyHourPricingPolicy;
+import restaurantrush.model.pricing.StandardPricingPolicy;
 import restaurantrush.model.staff.Cashier;
 import restaurantrush.model.staff.Chef;
 import restaurantrush.model.staff.Waiter;
+import restaurantrush.model.staff.Host;
 
 /**
  * Main.java
@@ -34,11 +33,12 @@ public class Main {
         Waiter waiter = new Waiter();
         Chef chef = new Chef();
         Cashier cashier = new Cashier();
+        Host host = new Host();
 
         GameState gameState = new GameState();
         gameState.configureRestaurant(
-            tables, waiter, chef, cashier
-        );
+        	    tables, waiter, chef, cashier, host
+        	);
 
         // Stage 2: Schedule six customers, including a VIP and a Critic.
         gameState.scheduleCustomerArrival(1, new RegularCustomer(1));
@@ -48,22 +48,10 @@ public class Main {
         gameState.scheduleCustomerArrival(13, new RegularCustomer(5));
         gameState.scheduleCustomerArrival(16, new RegularCustomer(6));
 
-        // Create the menu containing Salad, Burger and Pasta.
+        // Menu already contains Salad, Burger and Pasta.
         Menu menu = new Menu();
-
-        // Get the existing Salad and Pasta menu items.
-        MenuItem salad = menu.getItemByName("Salad");
-        MenuItem pasta = menu.getItemByName("Pasta");
-
-        // Create and register the Salad + Pasta combo.
-        ComboMeal saladPastaCombo =
-            new ComboMeal("Salad + Pasta", salad, pasta);
-
-        menu.addItem(saladPastaCombo);
-
-        // Use Happy Hour pricing when the policy is active.
-        HappyHourPricingPolicy pricingPolicy =
-            new HappyHourPricingPolicy();
+        StandardPricingPolicy pricingPolicy =
+            new StandardPricingPolicy();
 
         GameController controller = new GameController(
             gameState, menu, pricingPolicy
