@@ -563,10 +563,7 @@ public class GameController {
     }
 
     private void applyHappyHourBonus(Customer customer) {
-        // TODO PERSON 1:
-        // Call the agreed Customer satisfaction operation here.
-        // It must add 15 satisfaction, capped at 100, and must not
-        // affect served or departed customers.
+        customer.applyHappyHourBuff();
     }
 
     /**
