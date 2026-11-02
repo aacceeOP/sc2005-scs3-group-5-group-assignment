@@ -4,6 +4,7 @@ Java command-line restaurant management game for SC2002/SC2302, using numbered a
 
 - [Group repository](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment)
 - [Stage 1 snapshot](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/tree/stage-1)
+- [Stage 2 snapshot](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/tree/stage-2)
 
 ## Stage 2 scope
 
@@ -110,4 +111,8 @@ These checks cover the stated scenarios, not every possible action sequence. The
 - Updated Main to register the mixed arrival schedule, and GameCLI to show customer types and correctly format order details.
 - Reused the existing staff, table, pricing and turn-flow implementations. The Stage 2 runs exercised the shared preparation, serving and payment flow with the new customer types.
 
-The published Stage 1 snapshot remains available through the link above. Stage 2 has not yet been tagged; its class diagram will be added separately.
+## Stage 2 class diagram
+
+![Stage 2 class diagram](docs/diagrams/stage-2-class-diagram.png)
+
+[Open the full-resolution diagram](docs/diagrams/stage-2-class-diagram.png).
