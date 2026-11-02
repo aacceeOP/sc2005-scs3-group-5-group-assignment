@@ -14,6 +14,7 @@ import restaurantrush.model.pricing.StandardPricingPolicy;
 import restaurantrush.model.staff.Cashier;
 import restaurantrush.model.staff.Chef;
 import restaurantrush.model.staff.Waiter;
+import restaurantrush.model.staff.Host;
 
 /**
  * Main.java
@@ -32,11 +33,12 @@ public class Main {
         Waiter waiter = new Waiter();
         Chef chef = new Chef();
         Cashier cashier = new Cashier();
+        Host host = new Host();
 
         GameState gameState = new GameState();
         gameState.configureRestaurant(
-            tables, waiter, chef, cashier
-        );
+        	    tables, waiter, chef, cashier, host
+        	);
 
         // Stage 2: Schedule six customers, including a VIP and a Critic.
         gameState.scheduleCustomerArrival(1, new RegularCustomer(1));

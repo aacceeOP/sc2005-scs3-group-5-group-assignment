@@ -6,8 +6,7 @@ import restaurantrush.model.Table;
 import restaurantrush.model.customer.Customer;
 import restaurantrush.model.staff.Cashier;
 import restaurantrush.model.staff.Chef;
-// Stage 3 deferred: preserved for later integration.
-// import restaurantrush.model.staff.Host;
+import restaurantrush.model.staff.Host;
 import restaurantrush.model.staff.Waiter;
 
 import java.util.ArrayDeque;
@@ -47,8 +46,7 @@ public class GameState {
     private Waiter waiter;
     private Chef chef;
     private Cashier cashier;
-    // Stage 3 deferred: preserved for later integration.
-//     private Host host; // null is allowed before Stage 3
+    private Host host; 
 
     public GameState() {
         // Call configureRestaurant(...) before GameController.startGame().
@@ -56,16 +54,14 @@ public class GameState {
 
     /**
      * Injects restaurant resources. The base setup must contain two distinct
-     * tables and the Stage 1 staff. Host setup is deferred to Stage 3.
+     * tables and all required staff members.
      */
     public void configureRestaurant(
             List<Table> initialTables,
             Waiter waiter,
             Chef chef,
-            // Stage 3 deferred: preserved for later integration.
-//             Cashier cashier,
-//             Host host) {
-            Cashier cashier) {
+            Cashier cashier,
+            Host host){
         if (configured) {
             throw new IllegalStateException("Restaurant resources have already been configured.");
         }
@@ -87,16 +83,15 @@ public class GameState {
             }
             validatedTables.add(table);
         }
-        if (waiter == null || chef == null || cashier == null) {
-            throw new IllegalArgumentException("Waiter, Chef and Cashier are required.");
+        if (waiter == null || chef == null || cashier == null || host == null) {
+            throw new IllegalArgumentException("Waiter, Chef, Cashier and Host are required.");
         }
 
         tables.addAll(validatedTables);
         this.waiter = waiter;
         this.chef = chef;
         this.cashier = cashier;
-        // Stage 3 deferred: preserved for later integration.
-//         this.host = host;
+        this.host = host;
         configured = true;
     }
 
@@ -328,10 +323,9 @@ public class GameState {
         return cashier;
     }
 
-    // Stage 3 deferred: preserved for later integration.
-//     public Host getHost() {
-//         return host;
-//     }
+    public Host getHost() {
+        return host;
+    }
 
     private static boolean containsIdentity(List<Customer> values, Customer target) {
         for (Customer value : values) {
