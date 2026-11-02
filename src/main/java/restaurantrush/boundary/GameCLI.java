@@ -24,7 +24,16 @@ public class GameCLI {
         controller.startGame();
 
         while (!controller.isGameOver()) {
-            controller.beginTurn();
+            boolean activateHappyHour;
+
+            try {
+                activateHappyHour = getHappyHourActivationChoice();
+            } catch (EOFException ex) {
+                displayMessage("\nInput ended. Game stopped before completion.");
+                return;
+            }
+
+            controller.beginTurn(activateHappyHour);
 
             while (!controller.isTurnComplete()) {
                 displayState();
@@ -48,6 +57,32 @@ public class GameCLI {
         }
 
         displayResult(controller.checkResult());
+    }
+    
+    private boolean getHappyHourActivationChoice() throws EOFException {
+        if (!controller.canActivateHappyHour()) {
+            return false;
+        }
+
+        System.out.printf(
+                "%nTurn %d: Happy Hour is available.%n",
+                controller.getCurrentTurn());
+
+        System.out.println("1) Activate Happy Hour now (2 turns)");
+        System.out.println("2) Save it for a later turn");
+
+        while (true) {
+            int choice = inputHandler.readInt("Choose an option: ");
+
+            if (choice == 1) {
+                return true;
+            }
+            if (choice == 2) {
+                return false;
+            }
+
+            displayMessage("Please choose 1 or 2.");
+        }
     }
 
     public void displayState() {
@@ -74,7 +109,7 @@ public class GameCLI {
                 customer.getCustomerId(),
                 customer.getCustomerType(),
                 customer.getSatisfaction());
-        }
+}
 
         System.out.println("\nTables:");
         for (Table table : controller.getTables()) {
@@ -99,7 +134,7 @@ public class GameCLI {
         }
         for (Order order : orders) {
             System.out.printf(
-                "Order %d | Customer %d | Type: %s | Item: %s | Status: %s | Preparation: %d/%d%n",
+            	"Order %d | Customer %d | %s | %s | Status: %s | Preparation: %d/%d%n",
                     order.getOrderId(),
                     order.getCustomer().getCustomerId(),
                     order.getCustomer().getCustomerType(),
@@ -108,12 +143,87 @@ public class GameCLI {
                     order.getPreparationProgress(),
                     order.getItem().getPreparationUnits());
         }
+        System.out.println();
+
+        if (controller.isHappyHourActive()) {
+            System.out.printf(
+                    "Happy Hour: ACTIVE | %d turn(s) remaining%n",
+                    controller.getHappyHourRemainingTurns());
+        } else if (controller.canActivateHappyHour()) {
+            System.out.println("Happy Hour: Available (not yet activated)");
+        } else {
+            System.out.println("Happy Hour: Expired");
+        }
+
+        int availableTableCount = 0;
+
+        for (Table table : controller.getTables()) {
+            if (table.isAvailable()) {
+                availableTableCount++;
+            }
+        }
+
+        System.out.printf(
+                "Available tables: %d of %d%n",
+                availableTableCount,
+                controller.getTables().size());
+        
+        if ("HOST".equals(controller.getCurrentPhase())) {
+            System.out.println("\nCustomers eligible for Host seating:");
+
+            List<Customer> eligible = controller.getHostEligibleCustomers();
+
+            if (eligible.isEmpty()) {
+                System.out.println("None");
+            }
+
+            for (Customer customer : eligible) {
+                System.out.printf(
+                        "Customer %d | Type: %s | Satisfaction: %d%n",
+                        customer.getCustomerId(),
+                        customer.getCustomerType(),
+                        customer.getSatisfaction());
+            }
+        }
+
+        if (controller.isHappyHourActive()) {
+            System.out.println("\nCustomers eligible for Happy Hour bonus:");
+
+            List<Customer> eligible = controller.getHappyHourEligibleCustomers();
+
+            if (eligible.isEmpty()) {
+                System.out.println("None");
+            }
+
+            for (Customer customer : eligible) {
+                System.out.printf(
+                        "Customer %d | Type: %s | Satisfaction: %d%n",
+                        customer.getCustomerId(),
+                        customer.getCustomerType(),
+                        customer.getSatisfaction());
+            }
+        }
     }
 
     public String getManagerChoice() throws EOFException {
         String phase = controller.getCurrentPhase();
         while (true) {
             System.out.println("\nCurrent phase: " + phase);
+            if ("HOST".equals(phase)) {
+                System.out.println("1) Seat a waiting customer");
+                System.out.println("2) Pass");
+
+                int choice = inputHandler.readInt("Choose an action: ");
+
+                switch (choice) {
+                    case 1:
+                        return "HOST:SEAT:" + readPositiveId("Customer ID: ");
+                    case 2:
+                        return "PHASE:PASS";
+                    default:
+                        displayMessage("Please choose 1 or 2.");
+                }
+            }
             if ("WAITER".equals(phase)) {
                 System.out.println("1) Seat a customer");
                 System.out.println("2) Take an order");
