@@ -10,7 +10,9 @@ import restaurantrush.model.customer.RegularCustomer;
 import restaurantrush.model.customer.VIPCustomer;
 import restaurantrush.model.customer.CriticCustomer;
 import restaurantrush.model.menu.Menu;
-import restaurantrush.model.pricing.StandardPricingPolicy;
+import restaurantrush.model.menu.MenuItem;
+import restaurantrush.model.menu.ComboMeal;
+import restaurantrush.model.pricing.HappyHourPricingPolicy;
 import restaurantrush.model.staff.Cashier;
 import restaurantrush.model.staff.Chef;
 import restaurantrush.model.staff.Waiter;
@@ -46,10 +48,22 @@ public class Main {
         gameState.scheduleCustomerArrival(13, new RegularCustomer(5));
         gameState.scheduleCustomerArrival(16, new RegularCustomer(6));
 
-        // Menu already contains Salad, Burger and Pasta.
+        // Create the menu containing Salad, Burger and Pasta.
         Menu menu = new Menu();
-        StandardPricingPolicy pricingPolicy =
-            new StandardPricingPolicy();
+
+        // Get the existing Salad and Pasta menu items.
+        MenuItem salad = menu.getItemByName("Salad");
+        MenuItem pasta = menu.getItemByName("Pasta");
+
+        // Create and register the Salad + Pasta combo.
+        ComboMeal saladPastaCombo =
+            new ComboMeal("Salad + Pasta", salad, pasta);
+
+        menu.addItem(saladPastaCombo);
+
+        // Use Happy Hour pricing when the policy is active.
+        HappyHourPricingPolicy pricingPolicy =
+            new HappyHourPricingPolicy();
 
         GameController controller = new GameController(
             gameState, menu, pricingPolicy
