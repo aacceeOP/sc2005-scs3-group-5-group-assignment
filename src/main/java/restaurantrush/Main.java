@@ -9,6 +9,7 @@ import restaurantrush.model.Table;
 import restaurantrush.model.customer.RegularCustomer;
 import restaurantrush.model.customer.VIPCustomer;
 import restaurantrush.model.customer.CriticCustomer;
+import restaurantrush.model.menu.ComboMeal;
 import restaurantrush.model.menu.Menu;
 import restaurantrush.model.pricing.StandardPricingPolicy;
 import restaurantrush.model.staff.Cashier;
@@ -50,6 +51,8 @@ public class Main {
 
         // Menu already contains Salad, Burger and Pasta.
         Menu menu = new Menu();
+        menu.addItem(new ComboMeal("Salad + Pasta",
+                menu.getItemByName("Salad"), menu.getItemByName("Pasta")));
         StandardPricingPolicy pricingPolicy =
             new StandardPricingPolicy();
 
