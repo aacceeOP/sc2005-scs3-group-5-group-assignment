@@ -6,8 +6,7 @@ import restaurantrush.model.Table;
 import restaurantrush.model.customer.Customer;
 import restaurantrush.model.menu.Menu;
 import restaurantrush.model.pricing.PricingPolicy;
-// Stage 3 deferred: preserved for later integration.
-// import restaurantrush.model.pricing.HappyHourPolicy;
+import restaurantrush.model.pricing.HappyHourPricingPolicy;
 import restaurantrush.model.staff.Cashier;
 import restaurantrush.model.staff.Chef;
 // Stage 3 deferred: preserved for later integration.
@@ -40,13 +39,11 @@ public class GameController {
     private static final int MIN_PAID_CUSTOMERS = 4;
     private static final int MIN_REVENUE_CENTS = 4_500;
     private static final double MIN_AVERAGE_SATISFACTION = 60.0;
-    private static final int HAPPY_HOUR_DURATION_TURNS = 2;
 
     private final GameState gameState;
     private final Menu menu;
     private final PricingPolicy pricingPolicy;
-    private boolean happyHourUsed;
-    private int happyHourRemainingTurns;
+    private final HappyHourPricingPolicy happyHourPolicy = new HappyHourPricingPolicy();
 
     private boolean gameStarted;
     private boolean turnStarted;
@@ -123,13 +120,7 @@ public class GameController {
         }
 
         if (activateHappyHour) {
-            if (happyHourUsed) {
-                throw new IllegalStateException(
-                        "Happy Hour has already been used.");
-            }
-
-            happyHourUsed = true;
-            happyHourRemainingTurns = HAPPY_HOUR_DURATION_TURNS;
+            happyHourPolicy.activate();
         }
 
         resetActiveStaffForTurn();
@@ -207,7 +198,7 @@ public class GameController {
         int currentTurn = gameState.getCurrentTurn();
         processEatingAndPayment(currentTurn);
         processAbandonment();
-        advanceHappyHour();
+        happyHourPolicy.advanceTurn();
         gameState.incrementTurn();
         turnStarted = false;
     }
@@ -270,22 +261,17 @@ public class GameController {
         return gameState.getCurrentTurn() > FINAL_TURN;
     }
     public boolean canActivateHappyHour() {
-        return !happyHourUsed;
+        return happyHourPolicy.canActivate();
     }
 
     public boolean isHappyHourActive() {
-        return happyHourRemainingTurns > 0;
+        return happyHourPolicy.isActive();
     }
 
     public int getHappyHourRemainingTurns() {
-        return happyHourRemainingTurns;
+        return happyHourPolicy.getRemainingTurns();
     }
 
-    private void advanceHappyHour() {
-        if (happyHourRemainingTurns > 0) {
-            happyHourRemainingTurns--;
-        }
-    }
     public List<Customer> getHostEligibleCustomers() {
         List<Customer> eligible = new ArrayList<>();
 
@@ -731,21 +717,6 @@ public class GameController {
         }
     }
     private PricingPolicy getActivePricingPolicy() {
-        if (isHappyHourActive()) {
-            return getHappyHourPricingPolicy();
-        }
-
-        return pricingPolicy;
-    }
-
-    private PricingPolicy getHappyHourPricingPolicy() {
-        // TODO PERSON 2:
-        // Return the agreed Happy Hour pricing policy here.
-        // It must apply the customer discount first, then the 20% discount.
-        // The resulting bill must be locked on the Order by Waiter.takeOrder().
-        //
-        // Temporary fallback: use the normal policy until Person 2's
-        // Happy Hour pricing API is available.
-        return pricingPolicy;
+        return happyHourPolicy.isActive() ? happyHourPolicy : pricingPolicy;
     }
 }

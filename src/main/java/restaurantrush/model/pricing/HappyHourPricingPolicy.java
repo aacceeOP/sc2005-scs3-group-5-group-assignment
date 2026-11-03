@@ -15,8 +15,12 @@ public class HappyHourPricingPolicy implements PricingPolicy {
         this.remainingTurns = 0;
     }
 
+    public boolean canActivate() {
+        return !activatedBefore;
+    }
+
     public void activate() {
-        if (activatedBefore) {
+        if (!canActivate()) {
             throw new IllegalStateException(
                 "Happy Hour can only be activated once per game."
             );
