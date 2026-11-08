@@ -2,7 +2,7 @@
 
 Java command-line restaurant management game for SC2002/SC2302. The manager runs an 18-turn service with two tables and decides which customers to seat, which orders to prepare and serve, and when to activate Happy Hour.
 
-[Group repository](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment) · [Stage 1 snapshot](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/tree/stage-1) · [Stage 2 snapshot](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/tree/stage-2) · [Stage 3 gameplay commit](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/tree/0432121a73787da268c1f5b49c22783d471290d8)
+[Group repository](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment) · [Stage 1 snapshot](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/tree/stage-1) · [Stage 2 snapshot](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/tree/stage-2) · [Stage 3 snapshot](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/tree/stage-3)
 
 ## Stage 3 scope
 
@@ -109,11 +109,11 @@ Start a fresh game. On every turn, choose **2** to skip Happy Hour, **2** for th
 
 ### Stage 1 → Stage 2
 
-Stage 2 introduced different customer behaviour while retaining one service and payment flow. The `VIPCustomer.java` and `CriticCustomer.java` files already existed in Stage 1. Stage 2 implemented their selection, satisfaction-loss and discount rules. `Customer.java` and `RegularCustomer.java` were updated to expose customer type labels. `Main.java` registered the mixed arrival schedule, and `GameCLI.java` displayed customer types and order details. The README was updated and the Stage 2 class diagram was added. No Java files were added or deleted in this transition. [Compare Stage 1 and Stage 2](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/compare/stage-1...stage-2)
+Stage 1 had only Regular customers in play. Stage 2 enabled the previously commented-out `VIPCustomer.java` and `CriticCustomer.java` subclasses, including their selection, satisfaction-loss and discount rules. All three customer types use the same service and payment flow. `Customer.java` and `RegularCustomer.java` were updated to expose customer type labels. `Main.java` registered the mixed arrival schedule, and `GameCLI.java` displayed customer types and order details. The README was updated and the Stage 2 class diagram was added. No Java files were added or deleted in this transition. [Compare Stage 1 and Stage 2](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/compare/stage-1...stage-2)
 
 ### Stage 2 → Stage 3
 
-The Stage 3 gameplay commit modified eight existing Java files. No Java files were added or deleted. [Compare Stage 2 and the Stage 3 gameplay commit](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/compare/stage-2...0432121a73787da268c1f5b49c22783d471290d8)
+The Stage 3 gameplay commit modified eight existing Java files. No Java files were added or deleted. [Compare Stage 2 and Stage 3](https://github.com/aacceeOP/sc2005-scs3-group-5-group-assignment/compare/stage-2...stage-3)
 
 | Changed file | Reason |
 | --- | --- |

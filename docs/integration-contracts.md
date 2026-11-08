@@ -1,6 +1,6 @@
 # Integration contracts
 
-Reference for the shared module interfaces. Later-stage APIs in this document are deferred while their implementations are commented out.
+These contracts describe the shared interfaces for customer, order, table, staff and controller code. Stage 2 enabled VIP and Critic customer behaviour. Stage 3 enabled the Host, combo meals and Happy Hour pricing.
 
 
 ## Table and staff integration requirements
